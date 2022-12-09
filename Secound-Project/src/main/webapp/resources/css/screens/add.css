@@ -1,6 +1,20 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+.add-price-line{
+	margin: 1rem 0px 1rem 8rem;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #237AF6;
+    width: 43.7rem;
+    height: 3rem;
+    align-items: center;
+    border-radius: 0.3rem;
+}
+.add-price-msg{
+}
+
+
 .add-container{
     width: 66rem;
     margin: 0 auto 5rem auto;

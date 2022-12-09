@@ -20,7 +20,7 @@
 				<div class="add-title">도서등록</div>
 					<div  class="top-button">
 						<button  class="addType_btn add-btn-grey grey">ISBN등록</button>
-						<button  class="addType_btn add-btn-grey grey click">직접등록</button>
+						<button  class="addType_btn add-btn-grey grey click">등록</button>
 					</div>
 					<div class="isbn_search disnone">
 						<span>
@@ -36,7 +36,7 @@
 						</div>
 					</div>
 					
-				<div class="add-item-cover">
+				<div class="add-item-cover" id="add_form_box">
 					<form name="BAddform" class="form-add-container" method="post">
 						<div class="form-add-img" id="profImglist">
 							<div id="profImg" class="add-item-conainer add-thumbnail">
@@ -52,10 +52,9 @@
 							</div>
 							<div id="drop_down" class="dropdown" onclick="dropdown()">
 								<div class="dropbtn">
-									<span class="dropbtn_icon"></span> <span
-										class="dropbtn_content">카테고리</span> <span
-										class="dropbtn_click"
-										style="font-family: Material Icons; font-size: 16px; color: #3b3b3b; float: right;">arrow_drop_down</span>
+									<span class="dropbtn_icon"></span> 
+									<span class="dropbtn_content"id="0">카테고리</span>
+									 <span class="dropbtn_click" style="font-family: Material Icons; font-size: 16px; color: #3b3b3b; float: right;">arrow_drop_down</span>
 								</div>
 								<div class="dropdown-content" id="dropdown-content-list">
 								</div>
@@ -67,7 +66,7 @@
 							</div>
 							<div class="form-add-box">
 								<div class="add-input">
-									<input class="title" type="text">
+									<input class="title" type="text" name="title">
 								</div>
 							</div>
 						</div>
@@ -77,7 +76,7 @@
 							</div>
 							<div class="form-add-box double">
 								<div class="add-input">
-									<input class="author" type="text">
+									<input class="author" type="text" name="author">
 								</div>
 							</div>
 							<div class="form-category-title">
@@ -85,7 +84,7 @@
 							</div>
 							<div class="form-add-box double">
 								<div class="add-input">
-									<input class="discount" type="text">
+									<input class="discount" type="text" name="discount">
 								</div>
 							</div>
 						</div>
@@ -95,7 +94,7 @@
 							</div>
 							<div class="form-add-box">
 								<div class="add-input">
-									<input class="publisher" type="text">
+									<input class="publisher" type="text" name="publisher">
 								</div>
 							</div>
 						</div>
@@ -105,9 +104,10 @@
 							</div>
 							<div class="form-add-box double">
 								<div class="add-input">
-									<input class="price" type="text">
+									<input class="price" type="text" name="price">
 								</div>
 							</div>
+							
 							<div class="form-category-title">
 								<label>재고</label>
 							</div>
@@ -117,6 +117,9 @@
 								</div>
 							</div>
 						</div>
+						        <div class="add-price-line hidden">
+							          <span class="add-price-msg show-price hidden">가격 : </span>
+        						</div>
 						<div class="add-form-input">
 							<div class="form-category-title">
 								<label>ISBN</label>
@@ -338,13 +341,16 @@ $('.addType_btn').click(function(e) {
          )
     $(e.target).addClass('click');
 	var isbn = document.querySelector('.isbn_search');
+	var add_form_box = document.querySelector('#add_form_box');
 	var isbn_btn = document.querySelector('.addType_btn');
 	const hasClass = isbn_btn.classList.contains("click");
 	
 	if (hasClass) {
 		$(isbn).removeClass("disnone");
-	}else{wq
+		$(add_form_box).addClass("disnone");
+	}else{
 		$(isbn).addClass("disnone");
+		$(add_form_box).removeClass("disnone");
 	}
 });
 
@@ -424,9 +430,235 @@ function readURL(obj) {
     formData.append('profImg' + img_count_string, obj.files[0]);
 }
 
+let isCategory = false;
+let isBookTitle = false;
+let isAuthor = false;
+let isDiscount = false;
+let isPublisher = false;
+let isPrice = false;
+let isAddr = false;
+
+
+$('.dropdown-content').on('click', e => {
+	chkCategory($(e.target), e.type);
+});
+
+/** 입력 창 입력시 조건에 따라 입력 내용 체크 기능 */
+$('.add-input>input').on('change keydown keyup paste', e => {
+	if($(e.target).attr('name') == 'title') {
+		chkBookTitle($(e.target), e.type);
+    }
+	if($(e.target).attr('name') == 'author') {
+		chkAuthor($(e.target), e.type);
+    }
+	if($(e.target).attr('name') == 'discount') {
+		chkDiscount($(e.target), e.type);
+    }
+	if($(e.target).attr('name') == 'publisher') {
+		chkPublisher($(e.target), e.type);
+    }
+	if($(e.target).attr('name') == 'price') {
+		chkPrice($(e.target), e.type);
+    }
+});
+/**
+ *  카테고리 선택 유무 체크 함수
+ *  @param 
+ *  @param
+ */
+ function chkCategory(element, type) {
+	let Category = $('.dropbtn_content').text();
+	let CategoryMsg = '카테고리';
+	if (Category == '카테고리') {
+		isCategory = false;
+	}else{
+		isCategory = true;
+	}
+}
+/**
+ *  도서명 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+function chkBookTitle(element,type) {
+	let BookTitle = element.val();
+	console.log(BookTitle);
+	if (BookTitle =='' || BookTitle == null  || BookTitle =='undefind' ) {
+		isBookTitle =false;
+		return;
+	}else{
+		isBookTitle = true;
+	}
+} 
+/**
+ *  저자명 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+ function chkAuthor(element,type) {
+		let Author = element.val();
+		
+		if (Author =='' || Author == null) {
+			isAuthor =false;
+			return;
+		}else{
+			isAuthor = true;
+		}
+	} 
+/**
+ *  할인율 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+ function chkDiscount(element,type) {
+		let Discount = element.val();
+		let isFlag = false;
+		console.log(Discount);	    
+	    
+	    if (isNaN(Discount)) {
+	    	isFlag = true;
+		} else if(Discount.search(/\s/) != -1) {      // 공백이 있는지
+	        isFlag = true;
+	    }	    
+	    
+		if (Discount =='' || Discount == null) {
+			isDiscount =false;
+			return
+		}else{
+			
+		}
+		
+		if (isFlag) {
+			isDiscount = false;
+		}else{
+			isDiscount = true;
+		}
+	}  
+/**
+ *  출판사 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+ function chkPublisher(element,type) {
+		let Publisher = element.val();
+		
+		if (Publisher =='' || Publisher == null) {
+			isPublisher =false;
+			return;
+		}else{
+			isPublisher = true;
+		}
+	} 
+ 
+/**
+ *  정가 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+ function chkPrice(element,type) {
+		let Price = element.val();
+		
+		if (Price =='' || Price == null) {
+			isPrice =false;
+			if (!isDiscount) {
+				hideErrMsg(element,'.show-price');
+			}
+			return;
+		}else{
+			isPrice = true;
+			if (isDiscount) {
+				totalPrice(element,'.show-price');
+			}
+		}
+}
+ 
+/**
+ *  재고 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+/**
+ *  ISBN 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+/**
+ *  책 상태 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+/**
+ *  책 상태 소개 입력 내용 체크 함수
+ *  @param 
+ *  @param
+ */
+ 
+ /**
+  * 메시지 표시해주는 함수
+  * @param element input element
+  * @param className 표시할 오류 class명
+  */
+ function totalPrice(element, className) {
+     if(className == '.show-price') {
+         element.closest($('.add-form-input')).next('div').removeClass('hidden');
+         element.closest($('.add-form-input')).next('div').find(className).removeClass('hidden');
+     }
+ };
+ /**
+  * 메시지 숨겨주는 함수
+  * @param element input element
+  * @param className 숨길 오류 class명
+  */
+ function hideErrMsg(element, className, type) {
+     if(type == 'focusout') {
+     } else {
+     }
+     if(!(className == '' || className == null)) {
+         element.closest($('.add-form-input')).next('div').addClass('hidden');
+         element.closest($('.add-form-input')).next('div').find(className).addClass('hidden');
+     }
+ };
+/**
+ * 상품 등록 폼 체크 함수
+ * @returns {boolean} 각 정보 모두 문제가 없으면 true, 아닐 경우 false 반환
+ */
+function addFormchk() {
+	    if(!isCategory) {
+			toast('카테고리를 선택해주세요');
+	        return false;
+	    }
+	    if(!isBookTitle) {
+			toast('도서명을 입력해주세요.');
+	        return false;
+	    }
+	    if(!isAuthor) {
+			toast('저자를 입력해주세요.');
+	        return false;
+	    }
+	    if(!isDiscount) {
+			toast('할인율을 입력해주세요.');
+	        return false;
+	    }
+	    if(!isPublisher) {
+			toast('출판사를 입력해주세요.');
+	        return false;
+	    }
+	    if(!isPrice) {
+			toast('가격을 입력해주세요.');
+	        return false;
+	    }
+
+	    return true;
+	}
+
+	
+	
+
+
 var formData = new FormData();
 function addFormSubmit() {
-	
+		if (addFormchk()) {
+			
 	    const bookcode =  addBookCode();
 	    const category  = $('.dropbtn_content').text();
         const title     = $('.title').val();
@@ -434,9 +666,11 @@ function addFormSubmit() {
         const discount  = $('.discount').val();
         const publisher = $('.publisher').val();
         const price     = $('.price').val();
+        alert(price);
         const stock     = $('.stock').val();
         const isbn      = $('.isbn').val();
-        const bookInfo      = $('.textarea-box').val();
+        let bookInfo      = $('.textarea-box').val();
+        bookInfo = bookInfo.replace(/(?:\r\n|\r|\n)/g, '<br>');
         const condition     = $('.add-select').val();
         const conditionInfo = $('#checkResult').val();
     	const bookImgUpload = document.querySelector('#profImgInput');
@@ -474,6 +708,7 @@ function addFormSubmit() {
 				
 			}
 		});
+		}
 	    
 	
 }

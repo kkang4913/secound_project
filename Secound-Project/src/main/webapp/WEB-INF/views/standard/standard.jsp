@@ -29,12 +29,12 @@
 			 <div class="top-btn-container">
 				 <c:if test="${sessionScope.loginData.memId eq 'admin'}">
 					 <div class="add-book">
-					 	<button class="" type="button" onclick="location.href='book-add'"><span>도서등록</span></button>
+					 	<button class="" type="button" onclick="location.href='book-add'"><span>도서관리</span></button>
 					 </div>
 				 </c:if>
 				 <c:if test="${sessionScope.loginData.memId ne 'admin'}">
 					 <div class="add-book">
-					 	<button class="" type="button"  style="visibility: hidden;" ><span>도서등록</span></button>
+					 	<button class="" type="button"  style="visibility: hidden;" ><span>도서관리</span></button>
 					 </div>
 				 </c:if>
 				 <c:if test="${not empty sessionScope.loginData}">
@@ -89,13 +89,6 @@
 		</div>
 		</main>
 <%@ include file="/WEB-INF/views/module/footer.jsp" %>
-<div id="teet" >
-<!-- 	<div  class="trigger-body">
-		<div class="trigger-message">
-			로그인 후 이용해주세요.
-		</div>
-	</div> -->
-</div>
 </body>
 <script type="text/javascript">
 $(function(){
@@ -372,35 +365,8 @@ function add_basket(code) {
 	});
 }
 
-function fillWidth(elem, timer, limit) {
-	if (!timer) { timer = 3000; }	
-	if (!limit) { limit = 100; }
-	var width = 1;
-	var id = setInterval(frame, timer / 100);
-		function frame() {
-		if (width >= limit) {
-			clearInterval(id);
-		} else {
-		}
-	}
-};
 
-function toast(msg, timer) {
-	if (!timer) { timer = 3000; }
-	var $elem = $("<div class='toastWrap'><span class='toast'>" + msg + "<b></b></span></div>");
-	$("#teet").append($elem); //top = prepend, bottom = append
-	$elem.slideToggle(100, function() {
-		$('.timerWrap', this).first().outerWidth($elem.find('.toast').first().outerWidth() - 10);
-		if (!isNaN(timer)) {
-			fillWidth($elem.find('.timer').first()[0], timer);
-			setTimeout(function() {
-				$elem.fadeOut(function() {
-					$(this).remove();
-				});
-			}, timer);			
-		}
-	});
-}
+
 
 
 function selectAll(selectAll)  {

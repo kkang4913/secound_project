@@ -68,5 +68,8 @@
 				 	</div>
 			</c:when>
 		</c:choose>
+		<div id="teet" >
+		</div>
 		</header>
 <script src="${path}/resources/js/quickmenu.js"></script>
+<script src="${path}/resources/js/components/toast.js"></script>
